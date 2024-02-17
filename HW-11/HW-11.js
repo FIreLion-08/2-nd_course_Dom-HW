@@ -11,7 +11,7 @@ const comments_Array = [
     date: '12.02.22 12:18',
     comment: 'Это будет первый комментарий на этой странице',
     like: 3,
-    userLike: false,
+    user_Like: false,
     paint: ''
   },
   {
@@ -19,7 +19,7 @@ const comments_Array = [
     date: '13.02.22 19:22',
     comment: 'Мне нравится как оформлена эта страница! ❤',
     like: 75,
-    userLike: true,
+    user_Like: true,
     paint: '-active-like'
   }
 ];
@@ -28,16 +28,17 @@ const comments_Array = [
 const likes = () => {
   const like_Buttons = document.querySelectorAll('.like-button');
   for (const like_Button of like_Buttons) {
-    like_Button.addEventListener('click', () => {
+    like_Button.addEventListener('click', (eventlike) => {
+      eventlike.stopPropagation();
       const index = like_Button.dataset.index;
-      if (comments_Array[index].userLike === false ) {
-        comments_Array[index].paint = '-active-like';
+      if (comments_Array[index].user_Like === false ) {
+        comments_Array[index].like_Change = "-active-like"; // Изменяем наименование ключа c "paint" на "like_Change" для остановки всплытия
         comments_Array[index].like += 1;
-        comments_Array[index].userLike = true;
+        comments_Array[index].user_Like = true;
       } else {
-        comments_Array[index].paint = '';
+        comments_Array[index].like_Change = ""; // Изменяем наименование ключа c "paint" на "like_Change" для остановки всплытия
         comments_Array[index].like -= 1;
-        comments_Array[index].userLike = false;
+        comments_Array[index].user_Like = false;
       }
       render_Comments();
     });
@@ -110,7 +111,7 @@ const render_Comments = () => {
         <div class="comment-footer">
           <div class="likes">
             <span class="likes-counter">${item.like}</span>
-            <button data-index='${index}' class="like-button ${item.userLike ? "-active-like" : ""}"></button>
+            <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
           </div>
         </div>
       </li>`;
@@ -213,7 +214,7 @@ button_Element.addEventListener('click', () => {
             .replaceAll(">", "&gt;")
             .replaceAll('"', "&quot;"),
       like: 0,
-      userLike: false,
+      user_Like: false,
       paint: '',
   });
     render_Comments();
