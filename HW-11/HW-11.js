@@ -4,6 +4,23 @@ const button_Element = document.getElementById('add-button');
 const list_Element = document.getElementById('list');
 const delete_Button_Element = document.getElementById('delete-button');
 
+// Установка формата даты ДД.ММ.ГГГГ ЧЧ:ММ
+const date = new Date();
+const formattedDate =
+  date.getDate().toString().padStart(2, '0') + '.' +
+  (date.getMonth() + 1).toString().padStart(2, '0') + '.' +
+  date.getFullYear().toString().slice(-2) + ' ' +
+  date.getHours().toString().padStart(2, '0') + ':' +
+  date.getMinutes().toString().padStart(2, '0');
+
+//Функция безопастности ввода данных
+  function replaceText(text) {
+    return text.replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+  }
+
 // Массив
 const comments_Array = [
   {
@@ -19,30 +36,31 @@ const comments_Array = [
     date: '13.02.22 19:22',
     comment: 'Мне нравится как оформлена эта страница! ❤',
     like: 75,
-    user_Like: true,
-    paint: '-active-like'
+    user_Like: false,
+    paint: ''
   }
 ];
 
 // Добавление и удаление Лайков
 const likes = () => {
   const like_Buttons = document.querySelectorAll('.like-button');
-  for (const like_Button of like_Buttons) {
-    like_Button.addEventListener('click', (eventlike) => {
-      eventlike.stopPropagation();
-      const index = like_Button.dataset.index;
-      if (comments_Array[index].user_Like === false ) {
-        comments_Array[index].like_Change = "-active-like"; // Изменяем наименование ключа c "paint" на "like_Change" для остановки всплытия
-        comments_Array[index].like += 1;
-        comments_Array[index].user_Like = true;
-      } else {
-        comments_Array[index].like_Change = ""; // Изменяем наименование ключа c "paint" на "like_Change" для остановки всплытия
-        comments_Array[index].like -= 1;
-        comments_Array[index].user_Like = false;
-      }
+  like_Buttons.forEach((el, index) => {
+    el.addEventListener('click', (eventlike) => {
+      eventlike.stopPropagation()
+      comments_Array[index].user_Like = !comments_Array[index].user_Like
+      // Вариант_№1
+      comments_Array[index].user_Like ? comments_Array[index].like++ : comments_Array[index].like--
+      // Вариант_№2
+      // if(comments_Array[index].user_Like) {
+      //   comments_Array[index].user_Like = true;
+      //   comments_Array[index].like++;
+      // } else {
+      //   comments_Array[index].like--;
+      //   comments_Array[index].user_Like = false;
+      // }
       render_Comments();
-    });
-  };
+    })
+  })
 };
 
 //Редактирование комментариев
@@ -159,14 +177,12 @@ const render_Comments = () => {
     });
   });
 };
-
 render_Comments();
-
 
 // Условие не активной кнопки
 button_Element.disabled = true;
 name_Input_Element.addEventListener('input', () =>{
-  if (name_Input_Element.value === " " || comment_Input_Element.value === " ") {
+  if (name_Input_Element.value === "" || comment_Input_Element.value === "") {
     button_Element.disabled = true;
     return;
   } else {
@@ -176,59 +192,44 @@ name_Input_Element.addEventListener('input', () =>{
 
 // Функция клика, валидация
 button_Element.addEventListener('click', () => {
-    name_Input_Element.classList.remove('error');
-    comment_Input_Element.classList.remove('error');
-    button_Element.classList.remove("disabled-button");
+  name_Input_Element.classList.remove('error');
+  comment_Input_Element.classList.remove('error');
+  button_Element.classList.remove("disabled-button");
 
-    // Удаление пробелов спереди и сзади в полях ввода
-    name_Input_Element.value = name_Input_Element.value.trim();
-    comment_Input_Element.value = comment_Input_Element.value.trim();
+  // Удаление пробелов спереди и сзади в полях ввода
+  name_Input_Element.value = name_Input_Element.value.trim();
+  comment_Input_Element.value = comment_Input_Element.value.trim();
 
-    // Проверка на пустые поля
-    if (name_Input_Element.value === "" || comment_Input_Element.value === "") {
-      name_Input_Element.classList.add('error');
-      comment_Input_Element.classList.add('error');
-      button_Element.classList.add("disabled-button");
-      return;
-    }
-
-  // Установка формата даты ДД.ММ.ГГГГ ЧЧ:ММ
-  const date = new Date();
-  const formattedDate =
-  date.getDate().toString().padStart(2, '0') + '.' +
-  (date.getMonth() + 1).toString().padStart(2, '0') + '.' +
-  date.getFullYear().toString().slice(-2) + ' ' +
-  date.getHours().toString().padStart(2, '0') + ':' +
-  date.getMinutes().toString().padStart(2, '0');
+  // Проверка на пустые поля
+  if (name_Input_Element.value === "" || comment_Input_Element.value === "") {
+    name_Input_Element.classList.add('error');
+    comment_Input_Element.classList.add('error');
+    button_Element.classList.add("disabled-button");
+    return;
+  }
 
   comments_Array.push({
-      name: name_Input_Element.value
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;"),
-      date: formattedDate,
-      comment: comment_Input_Element.value
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;"),
-      like: 0,
-      user_Like: false,
-      paint: '',
+    name: replaceText(name_Input_Element.value),
+    date: formattedDate,
+    comment: replaceText(comment_Input_Element.value),
+    like: 0,
+    user_Like: false,
+    paint: '',
   });
     render_Comments();
     name_Input_Element.value = '';
     comment_Input_Element.value = '';
     button_Element.disabled = true;
 });
-//
+
+// Удаление комментариев
 delete_Button_Element.addEventListener('click', () =>{
   const lastCommentIndex = list_Element.innerHTML.lastIndexOf( '<li class="comment">' );
   if (lastCommentIndex !== -1) {
     list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
   }
 });
+
 // Нажатие для ввода ЕNTER
 document.addEventListener('keyup', (event) =>{
   if (event.key === 'Enter') {
