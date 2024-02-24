@@ -279,6 +279,7 @@ delete_Button_Element.addEventListener('click', () =>{
     list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
   }
 
+  // Не работает
   // Удаление комментария и из сервера API
   const idDelete = "..";
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments" + idDelete, {
