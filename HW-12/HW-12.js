@@ -54,13 +54,13 @@ fetchPromise.then((response) => {
   // Подписываемся на результат преобразования
   jsonPromise.json().then((responseData) => {
     // приведение к нужному формату данных
-    const formatComments = responseData.comments_Array.map ((comment) => {
+    const formatComments = responseData.comments.map ((comment) => {
       return {
         name: comment.author.name,
-        text: comment.text,
+        comment: comment.text,
         date: new Date().toLocaleString().slice(0, -3),
-        likes: comment.likes,
-        isLiked:false,
+        like: comment.likes,
+        user_Like:false,
       };
     })
     console.log(formatComments);
@@ -196,26 +196,6 @@ const render_Comments = () => {
     });
   });
 
-
-
-  //HW_02.12
-  // Добавление нового комментария и загрузка в сервер API
-  fetch("https://webdev-hw-api.vercel.app/api/v1/:Dmitry-Avdoshkin/comments", {
-    method: 'POST',
-    body: JSON.stringify({
-      name: name_Input_Element.value,
-      text: comment_Input_Element.value
-    })
-  }).then((response) => {
-    response.json().then((responseData) => {
-      // после получения данных, рендер их в приложении
-      tasks = responseData.comments_Array;
-      render_Comments();
-    });
-  });
-
-
-
   //Кнопка сохранения после редактирования
   const save_Buttons = document.querySelectorAll(".save-button");
   save_Buttons.forEach((button, index) => {
@@ -268,6 +248,24 @@ button_Element.addEventListener('click', () => {
     paint: '',
   });
 
+
+    //HW_02.12
+  // Добавление нового комментария и загрузка в сервер API
+  fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
+    method: 'POST',
+    body: JSON.stringify({
+      name: name_Input_Element.value,
+      text: comment_Input_Element.value
+    })
+  }).then((response) => {
+    response.json().then((responseData) => {
+      // после получения данных, рендер их в приложении
+      tasks = responseData.comments_Array;
+      render_Comments();
+    });
+  });
+
+
     render_Comments();
     name_Input_Element.value = '';
     comment_Input_Element.value = '';
@@ -281,7 +279,21 @@ delete_Button_Element.addEventListener('click', () =>{
     list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
   }
 
+  // Удаление комментария и из сервера API
+  const idDelete = "..";
+  fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments" + idDelete, {
+    method: "DELETE",
+  }).then((response) => {
+    response.json().then((responseData) => {
+      // после получения данных, рендер их в приложении
+      tasks = responseData.comments_Array;
+      render_Comments();
+    });
+  });
+
+
 });
+render_Comments();
 
 // Нажатие для ввода ЕNTER
 document.addEventListener('keyup', (event) =>{
