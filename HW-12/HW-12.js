@@ -199,7 +199,7 @@ const render_Comments = () => {
 
 
   //HW_02.12
-  // Добавление нового комментария и загрузка в сервер A
+  // Добавление нового комментария и загрузка в сервер API
   fetch("https://webdev-hw-api.vercel.app/api/hw-12/:Avdoshkin_DA-key/comments_Array", {
     method: 'POST',
     body: JSON.stringify({
@@ -280,6 +280,7 @@ delete_Button_Element.addEventListener('click', () =>{
   if (lastCommentIndex !== -1) {
     list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
   }
+  
 });
 
 // Нажатие для ввода ЕNTER
