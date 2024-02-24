@@ -22,29 +22,29 @@ const formattedDate =
   }
 
 // Массив
-const comments_Array = [
+let comments_Array = [
   // РЕНДЕРИТСЯ ИЗ API
-  // {
-  //   name: 'Глеб Фокин',
-  //   date: '12.02.22 12:18',
-  //   comment: 'Это будет первый комментарий на этой странице',
-  //   like: 3,
-  //   user_Like: false,
-  //   paint: ''
-  // },
-  // {
-  //   name: 'Варвара Н.',
-  //   date: '13.02.22 19:22',
-  //   comment: 'Мне нравится как оформлена эта страница! ❤',
-  //   like: 75,
-  //   user_Like: false,
-  //   paint: ''
-  // }
+  {
+    name: 'Глеб Фокин',
+    date: '12.02.22 12:18',
+    comment: 'Это будет первый комментарий на этой странице',
+    like: 3,
+    user_Like: false,
+    paint: ''
+  },
+  {
+    name: 'Варвара Н.',
+    date: '13.02.22 19:22',
+    comment: 'Мне нравится как оформлена эта страница! ❤',
+    like: 75,
+    user_Like: false,
+    paint: ''
+  }
 ];
 
 //HW_02.12
 // Берем данные из массива с помощью GET и загружаем на сервер
-const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/Avdoshkin_DA-key/comments", {
   method: "GET"
 });
 // подписываемся на успешное завершение запроса с помощью then
@@ -54,7 +54,7 @@ fetchPromise.then((response) => {
   // Подписываемся на результат преобразования
   jsonPromise.json().then((responseData) => {
     // приведение к нужному формату данных
-    const formatComments = responseData.comments.map ((comment) => {
+    const formatComments = responseData.comments_Array.map ((comment) => {
       return {
         name: comment.author.name,
         text: comment.text,
@@ -65,7 +65,7 @@ fetchPromise.then((response) => {
     })
     console.log(formatComments);
     // получили данные и рендерим их в приложении
-    comments = formatComments;
+    comments_Array = formatComments;
     render_Comments();
   });
 });
@@ -196,6 +196,26 @@ const render_Comments = () => {
     });
   });
 
+
+
+  //HW_02.12
+  // Добавление нового комментария и загрузка в сервер API
+  fetch("https://webdev-hw-api.vercel.app/api/v1/Avdoshkin_DA-key/comments", {
+    method: 'POST',
+    body: JSON.stringify({
+      name: name_Input_Element.value,
+      text: comment_Input_Element.value
+    })
+  }).then((response) => {
+    response.json().then((responseData) => {
+      // после получения данных, рендер их в приложении
+      tasks = responseData.comments_Array;
+      render_Comments();
+    });
+  });
+
+
+
   //Кнопка сохранения после редактирования
   const save_Buttons = document.querySelectorAll(".save-button");
   save_Buttons.forEach((button, index) => {
@@ -239,8 +259,6 @@ button_Element.addEventListener('click', () => {
     return;
   }
 
-
-
   comments_Array.push({
     name: replaceText(name_Input_Element.value),
     date: formattedDate,
@@ -249,24 +267,6 @@ button_Element.addEventListener('click', () => {
     user_Like: false,
     paint: '',
   });
-
-  //HW_02.12
-  // Добавление нового комментария и загрузка в сервер A
-  fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
-    method: 'POST',
-    body: JSON.stringify({
-      name: name_Input_Element.value,
-      text: comment_Input_Element.value
-    })
-  }).then((response) => {
-    response.json().then((responseData) => {
-      // после получения данных, рендер их в приложении
-      tasks = responseData.comments;
-      render_Comments();
-    });
-  });
-
-
 
     render_Comments();
     name_Input_Element.value = '';
@@ -280,6 +280,7 @@ delete_Button_Element.addEventListener('click', () =>{
   if (lastCommentIndex !== -1) {
     list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
   }
+
 });
 
 // Нажатие для ввода ЕNTER
