@@ -44,7 +44,7 @@ let comments_Array = [
 
 //HW_02.12
 // Берем данные из массива с помощью GET и загружаем на сервер
-const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/Avdoshkin_DA-key/comments", {
+const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
   method: "GET"
 });
 // подписываемся на успешное завершение запроса с помощью then
@@ -200,7 +200,7 @@ const render_Comments = () => {
 
   //HW_02.12
   // Добавление нового комментария и загрузка в сервер API
-  fetch("https://webdev-hw-api.vercel.app/api/v1/Avdoshkin_DA-key/comments", {
+  fetch("https://webdev-hw-api.vercel.app/api/v1/:Dmitry-Avdoshkin/comments", {
     method: 'POST',
     body: JSON.stringify({
       name: name_Input_Element.value,
