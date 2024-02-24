@@ -22,7 +22,7 @@ const formattedDate =
   }
 
 // Массив
-const comments_Array = [
+let comments_Array = [
   // РЕНДЕРИТСЯ ИЗ API
   {
     name: 'Глеб Фокин',
