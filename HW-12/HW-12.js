@@ -280,7 +280,7 @@ delete_Button_Element.addEventListener('click', () =>{
   if (lastCommentIndex !== -1) {
     list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
   }
-  
+
 });
 
 // Нажатие для ввода ЕNTER
