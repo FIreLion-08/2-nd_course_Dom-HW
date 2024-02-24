@@ -44,7 +44,7 @@ const comments_Array = [
 
 //HW_02.12
 // Берем данные из массива с помощью GET и загружаем на сервер
-const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments", {
+const fetchPromise = fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments', {
   method: "GET"
 });
 // подписываемся на успешное завершение запроса с помощью then
@@ -252,7 +252,7 @@ button_Element.addEventListener('click', () => {
 
   //HW_02.12
   // Добавление нового комментария и загрузка в сервер A
-  fetch('https://webdev-hw-api.vercel.app/api/v1/:sukhoysemyon-key/comments', {
+  fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments', {
     method: 'POST',
     body: JSON.stringify({
       name: name_Input_Element.value,
