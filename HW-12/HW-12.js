@@ -44,7 +44,7 @@ const comments_Array = [
 
 //HW_02.12
 // Берем данные из массива с помощью GET и загружаем на сервер
-const fetchPromise = fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments', {
+const fetchPromise = fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments_Array', {
   method: "GET"
 });
 // подписываемся на успешное завершение запроса с помощью then
@@ -54,7 +54,7 @@ fetchPromise.then((response) => {
   // Подписываемся на результат преобразования
   jsonPromise.json().then((responseData) => {
     // приведение к нужному формату данных
-    const formatComments = responseData.comments.map ((comment) => {
+    const formatComments = responseData.comments_Array.map ((comment) => {
       return {
         name: comment.author.name,
         text: comment.text,
@@ -252,7 +252,7 @@ button_Element.addEventListener('click', () => {
 
   //HW_02.12
   // Добавление нового комментария и загрузка в сервер A
-  fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments', {
+  fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments_Array', {
     method: 'POST',
     body: JSON.stringify({
       name: name_Input_Element.value,
