@@ -24,22 +24,22 @@ const formattedDate =
 // Массив
 let comments_Array = [
   // РЕНДЕРИТСЯ ИЗ API
-  {
-    name: 'Глеб Фокин',
-    date: '12.02.22 12:18',
-    comment: 'Это будет первый комментарий на этой странице',
-    like: 3,
-    user_Like: false,
-    paint: ''
-  },
-  {
-    name: 'Варвара Н.',
-    date: '13.02.22 19:22',
-    comment: 'Мне нравится как оформлена эта страница! ❤',
-    like: 75,
-    user_Like: false,
-    paint: ''
-  }
+  // {
+  //   name: 'Глеб Фокин',
+  //   date: '12.02.22 12:18',
+  //   comment: 'Это будет первый комментарий на этой странице',
+  //   like: 3,
+  //   user_Like: false,
+  //   paint: ''
+  // },
+  // {
+  //   name: 'Варвара Н.',
+  //   date: '13.02.22 19:22',
+  //   comment: 'Мне нравится как оформлена эта страница! ❤',
+  //   like: 75,
+  //   user_Like: false,
+  //   paint: ''
+  // }
 ];
 
 //HW_02.12
@@ -273,7 +273,8 @@ button_Element.addEventListener('click', () => {
 });
 
 // Удаление комментариев
-delete_Button_Element.addEventListener('click', () =>{
+delete_Button_Element.addEventListener('click', (event) =>{
+  event.stopPropagation();
   const lastCommentIndex = list_Element.innerHTML.lastIndexOf( '<li class="comment">' );
   if (lastCommentIndex !== -1) {
     list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
@@ -281,7 +282,7 @@ delete_Button_Element.addEventListener('click', () =>{
 
   // Не работает
   // Удаление комментария и из сервера API
-  const idDelete = "..";
+  const idDelete = lastCommentIndex;
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments" + idDelete, {
     method: "DELETE",
   }).then((response) => {
