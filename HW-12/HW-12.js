@@ -44,7 +44,7 @@ const comments_Array = [
 
 //HW_02.12
 // Берем данные из массива с помощью GET и загружаем на сервер
-const fetchPromise = fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments_Array', {
+const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/hw-12/:Avdoshkin_DA-key/comments_Array", {
   method: "GET"
 });
 // подписываемся на успешное завершение запроса с помощью then
@@ -65,7 +65,7 @@ fetchPromise.then((response) => {
     })
     console.log(formatComments);
     // получили данные и рендерим их в приложении
-    comments = formatComments;
+    comments_Array = formatComments;
     render_Comments();
   });
 });
@@ -252,7 +252,7 @@ button_Element.addEventListener('click', () => {
 
   //HW_02.12
   // Добавление нового комментария и загрузка в сервер A
-  fetch('https://wedev-api.sky.pro/api/hw-12/:Avdoshkin_DA-key/comments_Array', {
+  fetch("https://webdev-hw-api.vercel.app/api/hw-12/:Avdoshkin_DA-key/comments_Array", {
     method: 'POST',
     body: JSON.stringify({
       name: name_Input_Element.value,
@@ -261,7 +261,7 @@ button_Element.addEventListener('click', () => {
   }).then((response) => {
     response.json().then((responseData) => {
       // после получения данных, рендер их в приложении
-      tasks = responseData.comments;
+      tasks = responseData.comments_Array;
       render_Comments();
     });
   });
