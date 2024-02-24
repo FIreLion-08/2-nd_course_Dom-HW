@@ -24,22 +24,22 @@ const formattedDate =
 // Массив
 const comments_Array = [
   // РЕНДЕРИТСЯ ИЗ API
-  // {
-  //   name: 'Глеб Фокин',
-  //   date: '12.02.22 12:18',
-  //   comment: 'Это будет первый комментарий на этой странице',
-  //   like: 3,
-  //   user_Like: false,
-  //   paint: ''
-  // },
-  // {
-  //   name: 'Варвара Н.',
-  //   date: '13.02.22 19:22',
-  //   comment: 'Мне нравится как оформлена эта страница! ❤',
-  //   like: 75,
-  //   user_Like: false,
-  //   paint: ''
-  // }
+  {
+    name: 'Глеб Фокин',
+    date: '12.02.22 12:18',
+    comment: 'Это будет первый комментарий на этой странице',
+    like: 3,
+    user_Like: false,
+    paint: ''
+  },
+  {
+    name: 'Варвара Н.',
+    date: '13.02.22 19:22',
+    comment: 'Мне нравится как оформлена эта страница! ❤',
+    like: 75,
+    user_Like: false,
+    paint: ''
+  }
 ];
 
 //HW_02.12
@@ -196,6 +196,26 @@ const render_Comments = () => {
     });
   });
 
+
+
+  //HW_02.12
+  // Добавление нового комментария и загрузка в сервер A
+  fetch("https://webdev-hw-api.vercel.app/api/hw-12/:Avdoshkin_DA-key/comments_Array", {
+    method: 'POST',
+    body: JSON.stringify({
+      name: name_Input_Element.value,
+      text: comment_Input_Element.value
+    })
+  }).then((response) => {
+    response.json().then((responseData) => {
+      // после получения данных, рендер их в приложении
+      tasks = responseData.comments_Array;
+      render_Comments();
+    });
+  });
+
+
+
   //Кнопка сохранения после редактирования
   const save_Buttons = document.querySelectorAll(".save-button");
   save_Buttons.forEach((button, index) => {
@@ -239,8 +259,6 @@ button_Element.addEventListener('click', () => {
     return;
   }
 
-
-
   comments_Array.push({
     name: replaceText(name_Input_Element.value),
     date: formattedDate,
@@ -249,24 +267,6 @@ button_Element.addEventListener('click', () => {
     user_Like: false,
     paint: '',
   });
-
-  //HW_02.12
-  // Добавление нового комментария и загрузка в сервер A
-  fetch("https://webdev-hw-api.vercel.app/api/hw-12/:Avdoshkin_DA-key/comments_Array", {
-    method: 'POST',
-    body: JSON.stringify({
-      name: name_Input_Element.value,
-      text: comment_Input_Element.value
-    })
-  }).then((response) => {
-    response.json().then((responseData) => {
-      // после получения данных, рендер их в приложении
-      tasks = responseData.comments_Array;
-      render_Comments();
-    });
-  });
-
-
 
     render_Comments();
     name_Input_Element.value = '';
