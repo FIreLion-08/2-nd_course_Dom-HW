@@ -47,7 +47,8 @@ let commentsArray = [
 const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
   method: "GET"
 });
-// подписываемся на успешное завершение запроса с помощью then
+
+// Подписываемся на успешное завершение запроса с помощью then
 fetchPromise.then((response) => {
   // Запускаем преобразовываем "сырые" данные от API в json формат
   const jsonPromise = response;
@@ -56,6 +57,7 @@ fetchPromise.then((response) => {
     // приведение к нужному формату данных
     const formatComments = responseData.comments.map ((comment) => {
       return {
+        id: comment.id,
         name: comment.author.name,
         comment: comment.text,
         date: new Date().toLocaleString().slice(0, -3),
@@ -69,8 +71,6 @@ fetchPromise.then((response) => {
     renderComments();
   });
 });
-
-
 
 // Добавление и удаление Лайков
 const likes = () => {
@@ -124,53 +124,80 @@ const handleSave = (index) => {
       // Переписываем комментарии
       renderComments();
       // Скрываем кнопку "Сохранить" после сохранения
-      listElement.querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = "none";
+      listElement.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "none";
 		});
   }
 };
 
-// Сократить код через тернарный оператор
-//Добавление комментариев
+
+// Добавление комментариев
 const renderComments = () => {
-  const commentsHtml = commentsArray.map((item, index) => {
-    if (item.paint) {
-      return `<li class="comment" data-index='${index}' data-id='${item.id}' >
-          <div class="comment-header">
-            <div>${item.name}</div>
-            <div>${item.date}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              <textarea  class="comment-input add-text " rows="4">${item.comment}</textarea>
-						  <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>
-            </div>
-          </div>
-        </li>`;
-    } else {
-      return `<li class="comment">
-        <div class="comment-header">
-          <div class="comment-name">${item.name}</div>
-          <div>${item.date}</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            <span class="comment-content  ">${item.comment}</span>
-            <button class="edit-button add-form-button">Редактировать</button>
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">${item.like}</span>
-            <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
-          </div>
-        </div>
-      </li>`;
-    }
-  }).join('');
+  //// Старый код
+  // const commentsHtml = commentsArray.map((item, index) => {
+  //   if (item.paint) {
+  //     return `<li class="comment" data-index='${index}' data-id='${item.id}' >
+  //         <div class="comment-header">
+  //           <div>${item.name}</div>
+  //           <div>${item.date}</div>
+  //         </div>
+  //         <div class="comment-body">
+  //           <div class="comment-text">
+  //             <textarea  class="comment-input add-text " rows="4">${item.comment}</textarea>
+	// 					  <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>
+  //           </div>
+  //         </div>
+  //       </li>`;
+  //   } else {
+  //     // Добавить в <li class="comment"> класс data-id='${item.id}' для удаления
+  //     return `<li class="comment">
+  //       <div class="comment-header">
+  //         <div class="comment-name">${item.name}</div>
+  //         <div>${item.date}</div>
+  //       </div>
+  //       <div class="comment-body">
+  //         <div class="comment-text">
+  //           <span class="comment-content  ">${item.comment}</span>
+  //           <button class="edit-button add-form-button">Редактировать</button>
+  //         </div>
+  //       </div>
+  //       <div class="comment-footer">
+  //         <div class="likes">
+  //           <span class="likes-counter">${item.like}</span>
+  //           <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
+  //         </div>
+  //       </div>
+  //     </li>`;
+  //   };
+  // }).join('');
+
+  // Вот что стало после скращения
+  const commentsHtml = commentsArray.map((item, index) => `
+  <li class="comment" ${item.paint ? `data-index='${index}' data-id='${item.id}'` : ''}>
+    <div class="comment-header">
+      <div class="${item.paint ? '' : 'comment-name'}">${item.name}</div>
+      <div>${item.date}</div>
+    </div>
+    <div class="comment-body">
+      <div class="comment-text">
+        ${item.paint ? `<textarea class="comment-input add-text" rows="4">${item.comment}</textarea>
+        <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>` : `
+        <span class="comment-content">${item.comment}</span>
+        <button class="edit-button add-form-button">Редактировать</button>`}
+      </div>
+    </div>
+    ${item.paint ? '' : `
+    <div class="comment-footer">
+      <div class="likes">
+        <span class="likes-counter">${item.like}</span>
+        <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
+      </div>
+    </div>`}
+  </li>
+`).join('');
   listElement.innerHTML = commentsHtml;
   likes();
   handleEdit();
-	handleSave();
+  // handleSave();
 
   const editButtons = document.querySelectorAll(".edit-button");
   editButtons.forEach((button, index) => {
@@ -186,8 +213,9 @@ const renderComments = () => {
   commentElements.forEach((comment) => {
     comment.addEventListener('click', (event) => {
 
+      //  Ошибка при редактировании
       // Получаем имя и текст комментария
-      const author = comment.querySelector('.comment-header .comment-name').textContent;
+      const author = comment.querySelector('.comment-header .comment-name').autContent;
       const text = comment.querySelector('.comment-text .comment-content').textContent;
 
       // Формируем ответную цитату для вставки в поле комментария
@@ -211,6 +239,7 @@ const renderComments = () => {
 };
 renderComments();
 
+// Ошибка последовательности ввода
 // Условие не активной кнопки
 buttonElement.disabled = true;
 nameInputElement.addEventListener('input', () => {
@@ -221,6 +250,15 @@ nameInputElement.addEventListener('input', () => {
     buttonElement.disabled = false;
   }
 });
+commentInputElement.addEventListener('input', () => {
+  if (nameInputElement.value === "" || commentInputElement.value === "") {
+    buttonElement.disabled = true;
+    return;
+  } else {
+    buttonElement.disabled = false;
+  }
+});
+
 
 // Функция клика, валидация
 buttonElement.addEventListener('click', () => {
@@ -249,8 +287,7 @@ buttonElement.addEventListener('click', () => {
     paint: '',
   });
 
-
-    //HW_02.12
+  //HW_02.12
   // Добавление нового комментария и загрузка в сервер API
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
     method: 'POST',
@@ -261,7 +298,38 @@ buttonElement.addEventListener('click', () => {
   }).then((response) => {
     response.json().then((responseData) => {
       // после получения данных, рендер их в приложении
-      // tasks = responseData.commentsArray;
+      commentsArray.push({
+        name: replaceText(nameInputElement.value),
+        date: formattedDate,
+        comment: replaceText(commentInputElement.value),
+        like: 0,
+        user_Like: false,
+        paint: '',
+      });
+      const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
+      method: "GET"
+      });
+      fetchPromise.then((response) => {
+        // Запускаем преобразовываем "сырые" данные от API в json формат
+        const jsonPromise = response;
+        // Подписываемся на результат преобразования
+        jsonPromise.json().then((responseData) => {
+          // приведение к нужному формату данных
+          const formatComments = responseData.comments.map ((comment) => {
+            return {
+              id: comment.id,
+              name: comment.author.name,
+              comment: comment.text,
+              date: new Date().toLocaleString().slice(0, -3),
+              like: comment.likes,
+              user_Like:false,
+            };
+          });
+          console.log(formatComments);
+          // получили данные и рендерим их в приложении
+          commentsArray = formatComments;
+        });
+      });
 
       renderComments();
       nameInputElement.value = '';
@@ -269,8 +337,6 @@ buttonElement.addEventListener('click', () => {
       buttonElement.disabled = true;
     });
   });
-
-
     // renderComments(); - Удаляем
     // nameInputElement.value = ''; - Перенесли выше на 264
     // commentInputElement.value = ''; - Переносим выше на 265
@@ -285,9 +351,8 @@ deletebuttonElement.addEventListener('click', (event) =>{
     listElement.innerHTML = listElement.innerHTML.substring( 0, lastCommentIndex );
   }
 
-  // Не работает
   // Удаление комментария и из сервера API
-  const idDelete = someElement.dataset.id;
+  let idDelete = commentsArray[commentsArray.length - 1].id;
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments" + idDelete, {
     method: "DELETE",
   }).then((response) => {
@@ -297,9 +362,8 @@ deletebuttonElement.addEventListener('click', (event) =>{
       renderComments();
     });
   });
-
-
 });
+
 renderComments();
 
 // Нажатие для ввода ЕNTER
