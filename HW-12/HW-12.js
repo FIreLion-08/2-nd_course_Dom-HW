@@ -132,7 +132,7 @@ const handleSave = (index) => {
 
 // Добавление комментариев
 const renderComments = () => {
-  //// Старый код
+  // // Старый код
   // const commentsHtml = commentsArray.map((item, index) => {
   //   if (item.paint) {
   //     return `<li class="comment" data-index='${index}' data-id='${item.id}' >
@@ -204,7 +204,7 @@ const renderComments = () => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       commentsArray[index].paint = true;
-      renderComments();
+      // renderComments();
     });
   });
 
@@ -215,7 +215,7 @@ const renderComments = () => {
 
       //  Ошибка при редактировании
       // Получаем имя и текст комментария
-      const author = comment.querySelector('.comment-header .comment-name').autContent;
+      const author = comment.querySelector('.comment-header .comment-name').textContent;
       const text = comment.querySelector('.comment-text .comment-content').textContent;
 
       // Формируем ответную цитату для вставки в поле комментария
@@ -237,7 +237,7 @@ const renderComments = () => {
     });
   });
 };
-renderComments();
+// renderComments();
 
 // Ошибка последовательности ввода
 // Условие не активной кнопки
