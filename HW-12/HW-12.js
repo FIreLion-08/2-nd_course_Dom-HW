@@ -186,6 +186,7 @@ const renderComments = () => {
   commentElements.forEach((comment) => {
     comment.addEventListener('click', (event) => {
 
+      //  Ошибка при редактировании
       // Получаем имя и текст комментария
       const author = comment.querySelector('.comment-header .comment-name').textContent;
       const text = comment.querySelector('.comment-text .comment-content').textContent;
@@ -211,6 +212,7 @@ const renderComments = () => {
 };
 renderComments();
 
+// Ошибка последовательности ввода
 // Условие не активной кнопки
 buttonElement.disabled = true;
 nameInputElement.addEventListener('input', () => {
