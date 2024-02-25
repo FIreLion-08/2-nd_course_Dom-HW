@@ -278,15 +278,6 @@ buttonElement.addEventListener('click', () => {
     return;
   }
 
-  commentsArray.push({
-    name: replaceText(nameInputElement.value),
-    date: formattedDate,
-    comment: replaceText(commentInputElement.value),
-    like: 0,
-    user_Like: false,
-    paint: '',
-  });
-
   //HW_02.12
   // Добавление нового комментария и загрузка в сервер API
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
