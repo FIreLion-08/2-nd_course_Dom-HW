@@ -47,7 +47,8 @@ let commentsArray = [
 const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
   method: "GET"
 });
-// подписываемся на успешное завершение запроса с помощью then
+
+// Подписываемся на успешное завершение запроса с помощью then
 fetchPromise.then((response) => {
   // Запускаем преобразовываем "сырые" данные от API в json формат
   const jsonPromise = response;
@@ -56,6 +57,7 @@ fetchPromise.then((response) => {
     // приведение к нужному формату данных
     const formatComments = responseData.comments.map ((comment) => {
       return {
+        id: comment.id,
         name: comment.author.name,
         comment: comment.text,
         date: new Date().toLocaleString().slice(0, -3),
@@ -69,8 +71,6 @@ fetchPromise.then((response) => {
     renderComments();
   });
 });
-
-
 
 // Добавление и удаление Лайков
 const likes = () => {
@@ -130,7 +130,7 @@ const handleSave = (index) => {
 };
 
 // Сократить код через тернарный оператор
-//Добавление комментариев
+// Добавление комментариев
 const renderComments = () => {
   const commentsHtml = commentsArray.map((item, index) => {
     if (item.paint) {
@@ -147,7 +147,7 @@ const renderComments = () => {
           </div>
         </li>`;
     } else {
-      return `<li class="comment">
+      return `<li class="comment" data-id='${item.id}'>
         <div class="comment-header">
           <div class="comment-name">${item.name}</div>
           <div>${item.date}</div>
@@ -242,16 +242,6 @@ buttonElement.addEventListener('click', () => {
     return;
   }
 
-  commentsArray.push({
-    name: replaceText(nameInputElement.value),
-    date: formattedDate,
-    comment: replaceText(commentInputElement.value),
-    like: 0,
-    user_Like: false,
-    paint: '',
-  });
-
-
     //HW_02.12
   // Добавление нового комментария и загрузка в сервер API
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
@@ -263,7 +253,38 @@ buttonElement.addEventListener('click', () => {
   }).then((response) => {
     response.json().then((responseData) => {
       // после получения данных, рендер их в приложении
-      // tasks = responseData.commentsArray;
+      commentsArray.push({
+        name: replaceText(nameInputElement.value),
+        date: formattedDate,
+        comment: replaceText(commentInputElement.value),
+        like: 0,
+        user_Like: false,
+        paint: '',
+      });
+      const fetchPromise = fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
+      method: "GET"
+      });
+      fetchPromise.then((response) => {
+        // Запускаем преобразовываем "сырые" данные от API в json формат
+        const jsonPromise = response;
+        // Подписываемся на результат преобразования
+        jsonPromise.json().then((responseData) => {
+          // приведение к нужному формату данных
+          const formatComments = responseData.comments.map ((comment) => {
+            return {
+              id: comment.id,
+              name: comment.author.name,
+              comment: comment.text,
+              date: new Date().toLocaleString().slice(0, -3),
+              like: comment.likes,
+              user_Like:false,
+            };
+          });
+          console.log(formatComments);
+          // получили данные и рендерим их в приложении
+          commentsArray = formatComments;
+        });
+      });
 
       renderComments();
       nameInputElement.value = '';
@@ -271,8 +292,6 @@ buttonElement.addEventListener('click', () => {
       buttonElement.disabled = true;
     });
   });
-
-
     // renderComments(); - Удаляем
     // nameInputElement.value = ''; - Перенесли выше на 264
     // commentInputElement.value = ''; - Переносим выше на 265
@@ -287,10 +306,9 @@ deletebuttonElement.addEventListener('click', (event) =>{
     listElement.innerHTML = listElement.innerHTML.substring( 0, lastCommentIndex );
   }
 
-  // Не работает
   // Удаление комментария и из сервера API
-  const idDelete = someElement.dataset.id;
-  fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments" + idDelete, {
+  let idDelete = commentsArray[commentsArray.length - 1].id;
+  fetch(`https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments/${idDelete}`, {
     method: "DELETE",
   }).then((response) => {
     response.json().then((responseData) => {
@@ -299,9 +317,8 @@ deletebuttonElement.addEventListener('click', (event) =>{
       renderComments();
     });
   });
-
-
 });
+
 renderComments();
 
 // Нажатие для ввода ЕNTER
