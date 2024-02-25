@@ -1,8 +1,8 @@
-const name_Input_Element = document.getElementById('name-input');
-const comment_Input_Element = document.getElementById('comment-input');
-const button_Element = document.getElementById('add-button');
-const list_Element = document.getElementById('list');
-const delete_Button_Element = document.getElementById('delete-button');
+const nameInputElement = document.getElementById('name-input');
+const commentInputElement = document.getElementById('comment-input');
+const buttonElement = document.getElementById('add-button');
+const listElement = document.getElementById('list');
+const deletebuttonElement = document.getElementById('delete-button');
 
 // Установка формата даты ДД.ММ.ГГГГ ЧЧ:ММ
 const date = new Date();
@@ -22,7 +22,7 @@ const formattedDate =
   }
 
 // Массив
-let comments_Array = [
+let commentsArray = [
   // РЕНДЕРИТСЯ ИЗ API
   // {
   //   name: 'Глеб Фокин',
@@ -65,8 +65,8 @@ fetchPromise.then((response) => {
     })
     console.log(formatComments);
     // получили данные и рендерим их в приложении
-    comments_Array = formatComments;
-    render_Comments();
+    commentsArray = formatComments;
+    renderComments();
   });
 });
 
@@ -78,62 +78,62 @@ const likes = () => {
   like_Buttons.forEach((el, index) => {
     el.addEventListener('click', (eventlike) => {
       eventlike.stopPropagation()
-      comments_Array[index].user_Like = !comments_Array[index].user_Like
+      commentsArray[index].user_Like = !commentsArray[index].user_Like
       // Вариант_№1
-      comments_Array[index].user_Like ? comments_Array[index].like++ : comments_Array[index].like--
+      commentsArray[index].user_Like ? commentsArray[index].like++ : commentsArray[index].like--
       // Вариант_№2
-      // if(comments_Array[index].user_Like) {
-      //   comments_Array[index].user_Like = true;
-      //   comments_Array[index].like++;
+      // if(commentsArray[index].user_Like) {
+      //   commentsArray[index].user_Like = true;
+      //   commentsArray[index].like++;
       // } else {
-      //   comments_Array[index].like--;
-      //   comments_Array[index].user_Like = false;
+      //   commentsArray[index].like--;
+      //   commentsArray[index].user_Like = false;
       // }
-      render_Comments();
+      renderComments();
     })
   })
 };
 
 //Редактирование комментариев
-const handle_Edit = (index) => {
-	const handle_Edit_Elements = document.querySelectorAll(".editing");
-	for ( const handle_Edit_Element of handle_Edit_Elements) {
-		handle_Edit_Element.addEventListener("click" , (event) => {
+const handleEdit = (index) => {
+	const handleEditElements = document.querySelectorAll(".editing");
+	for ( const handleEditElement of handleEditElements) {
+		handleEditElement.addEventListener("click" , (event) => {
 		event.stopPropagation();
-  comments_Array[index].paint = true;
-  render_Comments();
+  commentsArray[index].paint = true;
+  renderComments();
   // Показываем кнопку "Сохранить"
-  list_Element.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "block";
-  render_Comments();
+  listElement.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "block";
+  renderComments();
 	});
   }
 };
 
 // Cохранаяем отредактированный комментарий
-const handle_Save = (index) => {
-	const handle_Save_Elements = document.querySelectorAll(".saving");
-	for ( const handle_Save_Element of handle_Save_Elements) {
-		handle_Save_Element.addEventListener("click" , (event) => {
+const handleSave = (index) => {
+	const handleSaveElements = document.querySelectorAll(".saving");
+	for ( const handleSaveElement of handleSaveElements) {
+		handleSaveElement.addEventListener("click" , (event) => {
 			event.stopPropagation();
       // Получаем отредактированный комментарий
-      const editedComment = list_Element.querySelectorAll('.comment')[index].querySelector('.comment-input').value;
+      const editedComment = listElement.querySelectorAll('.comment')[index].querySelector('.comment-input').value;
       // Обновляем комментарий в массиве
-      comments_Array[index].comment = editedComment;
+      commentsArray[index].comment = editedComment;
       // Устанавливаем флаг редактирования в false
-      comments_Array[index].paint = false;
+      commentsArray[index].paint = false;
       // Переписываем комментарии
-      render_Comments();
+      renderComments();
       // Скрываем кнопку "Сохранить" после сохранения
-      list_Element.querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = "none";
+      listElement.querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = "none";
 		});
   }
 };
 
 //Добавление комментариев
-const render_Comments = () => {
-  const commentsHtml = comments_Array.map((item, index) => {
+const renderComments = () => {
+  const commentsHtml = commentsArray.map((item, index) => {
     if (item.paint) {
-      return `<li class="comment" data-index='${index}' >
+      return `<li class="comment" data-index='${index}' data-id='${item.id}' >
           <div class="comment-header">
             <div>${item.name}</div>
             <div>${item.date}</div>
@@ -141,7 +141,7 @@ const render_Comments = () => {
           <div class="comment-body">
             <div class="comment-text">
               <textarea  class="comment-input add-text " rows="4">${item.comment}</textarea>
-						  <button onclick="handle_Save(${index})" class="save-buttons add-form-button saving">Сохранить</button>
+						  <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>
             </div>
           </div>
         </li>`;
@@ -166,23 +166,23 @@ const render_Comments = () => {
       </li>`;
     }
   }).join('');
-  list_Element.innerHTML = commentsHtml;
+  listElement.innerHTML = commentsHtml;
   likes();
-  handle_Edit();
-	handle_Save();
+  handleEdit();
+	handleSave();
 
-  const edit_Buttons = document.querySelectorAll(".edit-button");
-  edit_Buttons.forEach((button, index) => {
+  const editButtons = document.querySelectorAll(".edit-button");
+  editButtons.forEach((button, index) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
-      comments_Array[index].paint = true;
-      render_Comments();
+      commentsArray[index].paint = true;
+      renderComments();
     });
   });
 
   // Ответ на комментарий
-  const comment_Elements = document.querySelectorAll(".comment");
-  comment_Elements.forEach((comment) => {
+  const commentElements = document.querySelectorAll(".comment");
+  commentElements.forEach((comment) => {
     comment.addEventListener('click', (event) => {
 
       // Получаем имя и текст комментария
@@ -192,57 +192,57 @@ const render_Comments = () => {
       // Формируем ответную цитату для вставки в поле комментария
       const quotedText = `> ${text}\n\n @${author}, `;
       document.getElementById('comment-input').value = quotedText;
-      render_Comments();
+      renderComments();
     });
   });
 
   //Кнопка сохранения после редактирования
-  const save_Buttons = document.querySelectorAll(".save-button");
-  save_Buttons.forEach((button, index) => {
+  const saveButtons = document.querySelectorAll(".save-button");
+  saveButtons.forEach((button, index) => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       const editedComment = button.parentNode.nextElementSibling.children[0].children[0].value;
-      comments_Array[index].comment = editedComment;
-      comments_Array[index].paint = false;
-      render_Comments();
+      commentsArray[index].comment = editedComment;
+      commentsArray[index].paint = false;
+      renderComments();
     });
   });
 };
-render_Comments();
+renderComments();
 
 // Условие не активной кнопки
-button_Element.disabled = true;
-name_Input_Element.addEventListener('input', () =>{
-  if (name_Input_Element.value === "" || comment_Input_Element.value === "") {
-    button_Element.disabled = true;
+buttonElement.disabled = true;
+nameInputElement.addEventListener('input', () => {
+  if (nameInputElement.value === "" || commentInputElement.value === "") {
+    buttonElement.disabled = true;
     return;
   } else {
-    button_Element.disabled = false;
+    buttonElement.disabled = false;
   }
 });
 
 // Функция клика, валидация
-button_Element.addEventListener('click', () => {
-  name_Input_Element.classList.remove('error');
-  comment_Input_Element.classList.remove('error');
-  button_Element.classList.remove("disabled-button");
+buttonElement.addEventListener('click', () => {
+  nameInputElement.classList.remove('error');
+  commentInputElement.classList.remove('error');
+  buttonElement.classList.remove("disabled-button");
 
   // Удаление пробелов спереди и сзади в полях ввода
-  name_Input_Element.value = name_Input_Element.value.trim();
-  comment_Input_Element.value = comment_Input_Element.value.trim();
+  nameInputElement.value = nameInputElement.value.trim();
+  commentInputElement.value = commentInputElement.value.trim();
 
   // Проверка на пустые поля
-  if (name_Input_Element.value === "" || comment_Input_Element.value === "") {
-    name_Input_Element.classList.add('error');
-    comment_Input_Element.classList.add('error');
-    button_Element.classList.add("disabled-button");
+  if (nameInputElement.value === "" || commentInputElement.value === "") {
+    nameInputElement.classList.add('error');
+    commentInputElement.classList.add('error');
+    buttonElement.classList.add("disabled-button");
     return;
   }
 
-  comments_Array.push({
-    name: replaceText(name_Input_Element.value),
+  commentsArray.push({
+    name: replaceText(nameInputElement.value),
     date: formattedDate,
-    comment: replaceText(comment_Input_Element.value),
+    comment: replaceText(commentInputElement.value),
     like: 0,
     user_Like: false,
     paint: '',
@@ -254,52 +254,56 @@ button_Element.addEventListener('click', () => {
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
     method: 'POST',
     body: JSON.stringify({
-      name: name_Input_Element.value,
-      text: comment_Input_Element.value
+      name: nameInputElement.value,
+      text: commentInputElement.value
     })
   }).then((response) => {
     response.json().then((responseData) => {
       // после получения данных, рендер их в приложении
-      tasks = responseData.comments_Array;
-      render_Comments();
+      // tasks = responseData.commentsArray;
+
+      renderComments();
+      nameInputElement.value = '';
+      commentInputElement.value = '';
+      buttonElement.disabled = true;
     });
   });
 
 
-    render_Comments();
-    name_Input_Element.value = '';
-    comment_Input_Element.value = '';
-    button_Element.disabled = true;
+    // renderComments(); - Удаляем
+    // nameInputElement.value = ''; - Перенесли выше на 264
+    // commentInputElement.value = ''; - Переносим выше на 265
+    // buttonElement.disabled = true; - Переносим выше на 265
 });
 
 // Удаление комментариев
-delete_Button_Element.addEventListener('click', (event) =>{
+deletebuttonElement.addEventListener('click', (event) =>{
   event.stopPropagation();
-  const lastCommentIndex = list_Element.innerHTML.lastIndexOf( '<li class="comment">' );
+  const lastCommentIndex = listElement.innerHTML.lastIndexOf( '<li class="comment">' );
   if (lastCommentIndex !== -1) {
-    list_Element.innerHTML = list_Element.innerHTML.substring( 0, lastCommentIndex );
+    listElement.innerHTML = listElement.innerHTML.substring( 0, lastCommentIndex );
   }
 
   // Не работает
   // Удаление комментария и из сервера API
-  const idDelete = lastCommentIndex;
+  const idDelete = someElement.dataset.id;
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments" + idDelete, {
     method: "DELETE",
   }).then((response) => {
     response.json().then((responseData) => {
       // после получения данных, рендер их в приложении
-      tasks = responseData.comments_Array;
-      render_Comments();
+      tasks = responseData.commentsArray;
+      renderComments();
     });
   });
 
 
 });
-render_Comments();
+renderComments();
 
 // Нажатие для ввода ЕNTER
 document.addEventListener('keyup', (event) =>{
   if (event.key === 'Enter') {
-    button_Element.click();
+    buttonElement.click();
   }
 });
