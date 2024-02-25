@@ -147,7 +147,8 @@ const renderComments = () => {
           </div>
         </li>`;
     } else {
-      return `<li class="comment" data-id='${item.id}'>
+      // Добавить в <li class="comment"> класс data-id='${item.id}' для удаления
+      return `<li class="comment">
         <div class="comment-header">
           <div class="comment-name">${item.name}</div>
           <div>${item.date}</div>
@@ -242,7 +243,16 @@ buttonElement.addEventListener('click', () => {
     return;
   }
 
-    //HW_02.12
+  commentsArray.push({
+    name: replaceText(nameInputElement.value),
+    date: formattedDate,
+    comment: replaceText(commentInputElement.value),
+    like: 0,
+    user_Like: false,
+    paint: '',
+  });
+
+  //HW_02.12
   // Добавление нового комментария и загрузка в сервер API
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
     method: 'POST',
@@ -308,7 +318,7 @@ deletebuttonElement.addEventListener('click', (event) =>{
 
   // Удаление комментария и из сервера API
   let idDelete = commentsArray[commentsArray.length - 1].id;
-  fetch(`https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments/${idDelete}`, {
+  fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments" + idDelete, {
     method: "DELETE",
   }).then((response) => {
     response.json().then((responseData) => {
