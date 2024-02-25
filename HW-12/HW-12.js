@@ -129,6 +129,7 @@ const handleSave = (index) => {
   }
 };
 
+// Сократить код через тернарный оператор
 //Добавление комментариев
 const renderComments = () => {
   const commentsHtml = commentsArray.map((item, index) => {
