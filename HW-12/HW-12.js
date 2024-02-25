@@ -124,54 +124,80 @@ const handleSave = (index) => {
       // Переписываем комментарии
       renderComments();
       // Скрываем кнопку "Сохранить" после сохранения
-      listElement.querySelectorAll('.comment')[index].querySelector('.save-buttons').style.display = "none";
+      listElement.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "none";
 		});
   }
 };
 
-// Сократить код через тернарный оператор
+
 // Добавление комментариев
 const renderComments = () => {
-  const commentsHtml = commentsArray.map((item, index) => {
-    if (item.paint) {
-      return `<li class="comment" data-index='${index}' data-id='${item.id}' >
-          <div class="comment-header">
-            <div>${item.name}</div>
-            <div>${item.date}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              <textarea  class="comment-input add-text " rows="4">${item.comment}</textarea>
-						  <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>
-            </div>
-          </div>
-        </li>`;
-    } else {
-      // Добавить в <li class="comment"> класс data-id='${item.id}' для удаления
-      return `<li class="comment">
-        <div class="comment-header">
-          <div class="comment-name">${item.name}</div>
-          <div>${item.date}</div>
-        </div>
-        <div class="comment-body">
-          <div class="comment-text">
-            <span class="comment-content  ">${item.comment}</span>
-            <button class="edit-button add-form-button">Редактировать</button>
-          </div>
-        </div>
-        <div class="comment-footer">
-          <div class="likes">
-            <span class="likes-counter">${item.like}</span>
-            <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
-          </div>
-        </div>
-      </li>`;
-    }
-  }).join('');
+  //// Старый код
+  // const commentsHtml = commentsArray.map((item, index) => {
+  //   if (item.paint) {
+  //     return `<li class="comment" data-index='${index}' data-id='${item.id}' >
+  //         <div class="comment-header">
+  //           <div>${item.name}</div>
+  //           <div>${item.date}</div>
+  //         </div>
+  //         <div class="comment-body">
+  //           <div class="comment-text">
+  //             <textarea  class="comment-input add-text " rows="4">${item.comment}</textarea>
+	// 					  <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>
+  //           </div>
+  //         </div>
+  //       </li>`;
+  //   } else {
+  //     // Добавить в <li class="comment"> класс data-id='${item.id}' для удаления
+  //     return `<li class="comment">
+  //       <div class="comment-header">
+  //         <div class="comment-name">${item.name}</div>
+  //         <div>${item.date}</div>
+  //       </div>
+  //       <div class="comment-body">
+  //         <div class="comment-text">
+  //           <span class="comment-content  ">${item.comment}</span>
+  //           <button class="edit-button add-form-button">Редактировать</button>
+  //         </div>
+  //       </div>
+  //       <div class="comment-footer">
+  //         <div class="likes">
+  //           <span class="likes-counter">${item.like}</span>
+  //           <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
+  //         </div>
+  //       </div>
+  //     </li>`;
+  //   };
+  // }).join('');
+
+  // Вот что стало после скращения
+  const commentsHtml = commentsArray.map((item, index) => `
+  <li class="comment" ${item.paint ? `data-index='${index}' data-id='${item.id}'` : ''}>
+    <div class="comment-header">
+      <div class="${item.paint ? '' : 'comment-name'}">${item.name}</div>
+      <div>${item.date}</div>
+    </div>
+    <div class="comment-body">
+      <div class="comment-text">
+        ${item.paint ? `<textarea class="comment-input add-text" rows="4">${item.comment}</textarea>
+        <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>` : `
+        <span class="comment-content">${item.comment}</span>
+        <button class="edit-button add-form-button">Редактировать</button>`}
+      </div>
+    </div>
+    ${item.paint ? '' : `
+    <div class="comment-footer">
+      <div class="likes">
+        <span class="likes-counter">${item.like}</span>
+        <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
+      </div>
+    </div>`}
+  </li>
+`).join('');
   listElement.innerHTML = commentsHtml;
   likes();
   handleEdit();
-	handleSave();
+  // handleSave();
 
   const editButtons = document.querySelectorAll(".edit-button");
   editButtons.forEach((button, index) => {
@@ -189,7 +215,7 @@ const renderComments = () => {
 
       //  Ошибка при редактировании
       // Получаем имя и текст комментария
-      const author = comment.querySelector('.comment-header .comment-name').textContent;
+      const author = comment.querySelector('.comment-header .comment-name').autContent;
       const text = comment.querySelector('.comment-text .comment-content').textContent;
 
       // Формируем ответную цитату для вставки в поле комментария
@@ -224,6 +250,15 @@ nameInputElement.addEventListener('input', () => {
     buttonElement.disabled = false;
   }
 });
+commentInputElement.addEventListener('input', () => {
+  if (nameInputElement.value === "" || commentInputElement.value === "") {
+    buttonElement.disabled = true;
+    return;
+  } else {
+    buttonElement.disabled = false;
+  }
+});
+
 
 // Функция клика, валидация
 buttonElement.addEventListener('click', () => {
