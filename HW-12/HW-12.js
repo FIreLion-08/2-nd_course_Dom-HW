@@ -213,10 +213,11 @@ const renderComments = () => {
   commentElements.forEach((comment) => {
     comment.addEventListener('click', (event) => {
 
-      //  Ошибка при редактировании
       // Получаем имя и текст комментария
-      const author = comment.querySelector('.comment-header .comment-name').textContent;
-      const text = comment.querySelector('.comment-text .comment-content').textContent;
+      // const author = comment.querySelector('.comment-header .comment-name').textContent;
+      // const text = comment.querySelector('.comment-text .comment-content').textContent;
+      const author = event.currentTarget.querySelector('.comment-header .comment-name').textContent;
+      const text = event.currentTarget.querySelector('.comment-text .comment-content').textContent;
 
       // Формируем ответную цитату для вставки в поле комментария
       const quotedText = `> ${text}\n\n @${author}, `;
