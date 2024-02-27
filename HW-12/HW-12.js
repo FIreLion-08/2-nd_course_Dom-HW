@@ -62,7 +62,8 @@ fetchPromise.then((response) => {
         comment: comment.text,
         date: new Date().toLocaleString().slice(0, -3),
         like: comment.likes,
-        user_Like:false,
+        user_Like: false,
+
       };
     })
     console.log(formatComments);
@@ -81,14 +82,6 @@ const likes = () => {
       commentsArray[index].user_Like = !commentsArray[index].user_Like
       // Вариант_№1
       commentsArray[index].user_Like ? commentsArray[index].like++ : commentsArray[index].like--
-      // Вариант_№2
-      // if(commentsArray[index].user_Like) {
-      //   commentsArray[index].user_Like = true;
-      //   commentsArray[index].like++;
-      // } else {
-      //   commentsArray[index].like--;
-      //   commentsArray[index].user_Like = false;
-      // }
       renderComments();
     })
   })
@@ -100,10 +93,10 @@ const handleEdit = (index) => {
 	for ( const handleEditElement of handleEditElements) {
 		handleEditElement.addEventListener("click" , (event) => {
 		event.stopPropagation();
-  commentsArray[index].paint = true;
-  renderComments();
-  // Показываем кнопку "Сохранить"
-  listElement.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "block";
+    commentsArray[index].paint = true;
+    renderComments();
+    // Показываем кнопку "Сохранить"
+    listElement.querySelectorAll('.comment')[index].querySelector('.save-button').style.display = "block";
   renderComments();
 	});
   }
@@ -132,43 +125,6 @@ const handleSave = (index) => {
 
 // Добавление комментариев
 const renderComments = () => {
-  //// Старый код
-  // const commentsHtml = commentsArray.map((item, index) => {
-  //   if (item.paint) {
-  //     return `<li class="comment" data-index='${index}' data-id='${item.id}' >
-  //         <div class="comment-header">
-  //           <div>${item.name}</div>
-  //           <div>${item.date}</div>
-  //         </div>
-  //         <div class="comment-body">
-  //           <div class="comment-text">
-  //             <textarea  class="comment-input add-text " rows="4">${item.comment}</textarea>
-	// 					  <button onclick="handleSave(${index})" class="save-buttons add-form-button saving">Сохранить</button>
-  //           </div>
-  //         </div>
-  //       </li>`;
-  //   } else {
-  //     // Добавить в <li class="comment"> класс data-id='${item.id}' для удаления
-  //     return `<li class="comment">
-  //       <div class="comment-header">
-  //         <div class="comment-name">${item.name}</div>
-  //         <div>${item.date}</div>
-  //       </div>
-  //       <div class="comment-body">
-  //         <div class="comment-text">
-  //           <span class="comment-content  ">${item.comment}</span>
-  //           <button class="edit-button add-form-button">Редактировать</button>
-  //         </div>
-  //       </div>
-  //       <div class="comment-footer">
-  //         <div class="likes">
-  //           <span class="likes-counter">${item.like}</span>
-  //           <button data-index='${index}' class="like-button ${item.user_Like ? "-active-like" : ""}"></button>
-  //         </div>
-  //       </div>
-  //     </li>`;
-  //   };
-  // }).join('');
 
   // Вот что стало после скращения
   const commentsHtml = commentsArray.map((item, index) => `
@@ -204,19 +160,19 @@ const renderComments = () => {
     button.addEventListener("click", (event) => {
       event.stopPropagation();
       commentsArray[index].paint = true;
-      renderComments();
+      // renderComments();
     });
   });
 
   // Ответ на комментарий
   const commentElements = document.querySelectorAll(".comment");
-  commentElements.forEach((comment) => {
+  commentElements.forEach((comment) => { //(comment, index)
     comment.addEventListener('click', (event) => {
-
-      //  Ошибка при редактировании
       // Получаем имя и текст комментария
-      const author = comment.querySelector('.comment-header .comment-name').autContent;
-      const text = comment.querySelector('.comment-text .comment-content').textContent;
+      const author = event.currentTarget.querySelector('.comment-header .comment-name').textContent;
+      const text = event.currentTarget.querySelector('.comment-text .comment-content').textContent;
+      // const author = commentsArray[index].name;
+      // const text= commentsArray[index].comment;
 
       // Формируем ответную цитату для вставки в поле комментария
       const quotedText = `> ${text}\n\n @${author}, `;
@@ -237,7 +193,7 @@ const renderComments = () => {
     });
   });
 };
-renderComments();
+// renderComments();
 
 // Ошибка последовательности ввода
 // Условие не активной кнопки
@@ -278,15 +234,6 @@ buttonElement.addEventListener('click', () => {
     return;
   }
 
-  commentsArray.push({
-    name: replaceText(nameInputElement.value),
-    date: formattedDate,
-    comment: replaceText(commentInputElement.value),
-    like: 0,
-    user_Like: false,
-    paint: '',
-  });
-
   //HW_02.12
   // Добавление нового комментария и загрузка в сервер API
   fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
@@ -323,6 +270,7 @@ buttonElement.addEventListener('click', () => {
               date: new Date().toLocaleString().slice(0, -3),
               like: comment.likes,
               user_Like:false,
+              paint: '',
             };
           });
           console.log(formatComments);
