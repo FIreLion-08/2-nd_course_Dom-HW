@@ -26,7 +26,7 @@ window.addEventListener('load', function () {
   return delayForSecond()
   .then(() => {
 	  addSign.style.display = "none";
-	  list.style.display = "block";
+	  list.style.display = "flex";
 	});
 });
 function delayForSecond(){
@@ -145,7 +145,7 @@ buttonElement.addEventListener("click", () => {
     nameInputElement.classList.add("error");
     return;
   }
-  
+
   if (commentInputElement.value.trim() === "") {
     commentInputElement.classList.add("error");
     return;
