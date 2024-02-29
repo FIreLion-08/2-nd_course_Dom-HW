@@ -15,7 +15,7 @@ let minutes = currentDate.getMinutes() < 10 ? '0' + currentDate.getMinutes() : c
 let formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
 
 
-//HW-13
+//HW-13 - Лоадер загрузки приложения
 window.addEventListener('load', function () {
   const addSign = document.getElementById('add-sign');
   const list = document.getElementById('list');
@@ -26,10 +26,9 @@ window.addEventListener('load', function () {
   return delayForSecond()
   .then(() => {
 	  addSign.style.display = "none";
-	  list.style.display = "block";
+	  list.style.display = "flex";
 	});
 });
-
 function delayForSecond(){
 	delay(3000);
 	return delay();
@@ -134,7 +133,7 @@ commentInputElement.addEventListener('input', function() {
   commentInputElement.classList.remove("error");
 });
 
-
+//HW-13 - Лоадер загрузки при добалении коментария
 // Условия для "Комментарий добавляется..."
 buttonElement.addEventListener("click", () => {
   nameInputElement.classList.remove("error");
@@ -146,16 +145,17 @@ buttonElement.addEventListener("click", () => {
     nameInputElement.classList.add("error");
     return;
   }
+
   if (commentInputElement.value.trim() === "") {
     commentInputElement.classList.add("error");
     return;
   }
 
-
   if (nameInputElement.value.trim() === "") {
     nameInputElement.classList.add("error");
     return;
   }
+
   if (commentInputElement.value.trim() === "") {
     commentInputElement.classList.add("error");
     return;
@@ -178,7 +178,7 @@ fetchAndRenderComments();
 
 // Добавление и удаление Лайков
 const likes = () => {
-  function delay2(interval = 300) {
+  function delay2(interval = 100) {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
@@ -225,7 +225,6 @@ const handleEdit = (index) => {
 	});
   }
 };
-
 
 function isCommentEmpty(comment) {
   const isEmpty = comment.trim() === "";
