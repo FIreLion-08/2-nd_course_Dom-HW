@@ -8,6 +8,7 @@ const addForm = document.getElementById("add-form");
 const container = document.getElementById("add-container");
 const loaderElement = document.getElementById("loading");
 
+// Установка формата даты ДД.ММ.ГГГГ ЧЧ:ММ
 const formatDateTime = () => {
     const currentDate = new Date();
     const day = String(currentDate.getDate()).padStart(2, '0');
@@ -17,10 +18,11 @@ const formatDateTime = () => {
     const hours = String(currentDate.getHours()).padStart(2, '0');
     return `${day}.${month}.${year} ${hours}:${minutes}`;
 };
-// Запрос двнных в API на комментарий
+
 //Массив
 let comments = [];
 
+// Запрос двнных в API на комментарий
 buttonElement.disabled = true;
 loaderElement.innerHTML = "Подождите пожалуйста, комментарии загружаются...";
 const fetchAndRenderComments = () => {
@@ -55,7 +57,7 @@ function delay(interval = 300) {
     });
 };
 
-//Ркндер функция
+//Рендер функция - Добавление комментариев
 const renderComments = () => {
     const commentsHtml = comments
         .map((comment, index) => {
@@ -80,17 +82,15 @@ const renderComments = () => {
     commentsElement.innerHTML = commentsHtml;
 
     // кнопка Цитирования
-    const quoteElements = document.querySelectorAll(".comment");
-    for (const comment of quoteElements) {
+    const commentElements = document.querySelectorAll(".comment");
+    for (const comment of commentElements) {
         comment.addEventListener("click", () => {
         const index = comment.dataset.index;
             const comentText = comments[index].text;
             const comentAuthor = comments[index].name;
-
             commentInputElement.value = `>${comentAuthor} ${comentText} `;
         })
     };
-
     initLikesListeners();
     initDeleteButtonsLisners();
 };
@@ -122,8 +122,7 @@ const initDeleteButtonsLisners = () => {
 };
 renderComments();
 
-//форма добавления
-
+//Форма добавления комментариев
 buttonElement.addEventListener("click", () => {
     nameInputElement.style.backgroundColor = "white" ;
     commentInputElement.style.backgroundColor = "white";
@@ -138,7 +137,6 @@ buttonElement.addEventListener("click", () => {
     buttonElement.disabled = true;
     buttonElement.textContent = "Комментарий добавляется...";
 
-    // addForm.textContent = "Комментарий добавляется...";
     const handlePostClick = () => {
         fetch("https://webdev-hw-api.vercel.app/api/v1/Dmitry-Avdoshkin/comments", {
             method: "POST",
@@ -155,10 +153,8 @@ buttonElement.addEventListener("click", () => {
             }
             if (response.status === 400) {
                 throw new Error("Неверный запрос");
-            //   return Promise.reject(new Error("Неверный запрос"));
             }if (response.status === 500) {
               throw new Error("Сервер упал");
-            //   return Promise.reject(new Error("Сервер упал"));
             }
 
           })
