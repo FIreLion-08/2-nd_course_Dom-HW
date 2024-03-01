@@ -7,34 +7,20 @@
   </head>
 
   <body>
-    <div class="container">
-		<div id="add-sign"></div>
-      <ul class="comments" id="list">
-        <!-- Список рендерится из Js -->
+    <div class="container" id="add-container">
+      <ul class="comments" id="comments" >
+       <!--Список берется из JS-->
       </ul>
-
-      <div class="add-form">
-        <input
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-          id="name-input"
-        />
-        <textarea
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-          id="comment-input"
-        ></textarea>
-
+      <div id="loading"></div>
+      <div class="add-form" id="add-form">
+        <input type="text" class="add-form-name" placeholder="Введите ваше имя" id="name-input"/>
+        <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4" id="comment-input"></textarea>
         <div class="add-form-row">
-          <button type="submit" id="add-button" class="add-form-button post-button">Написать</button>
-          <button id="delete-button" class="add-form-button">Удалить</button>
+          <button class="add-form-button" id="add-button">Написать</button>
         </div>
       </div>
     </div>
-	</body>
+  </body>
 <script src="HW-14.js">
   // Код писать здесь
 
