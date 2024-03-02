@@ -173,15 +173,14 @@ buttonElement.addEventListener("click", () => {
             if (error.message === "Неверный запрос") {
                 alert("Имя и комментарий должны быть не короче 3 символов");
             }else if (error.message === "Сервер упал") {
+              //  Пробуем снова, если сервер сломался
                 alert("Кажется, что-то пошло не так, попробуй позже");
-                // handlePostClick();
+                handlePostClick();
             } if (error.message === 'Failed to fetch') {
                 alert("Кажется,сломался интернет, попробуй позже");
             }
             // TODO: Отправлять в систему сбора ошибок
             console.warn(error);
-            //  Пробуем снова, если сервер сломался
-            handlePostClick();
         });
     };
     handlePostClick();
