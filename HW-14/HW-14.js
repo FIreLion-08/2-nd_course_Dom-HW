@@ -177,7 +177,7 @@ buttonElement.addEventListener("click", () => {
               //  Пробуем снова, если сервер сломался
                 alert("Кажется, что-то пошло не так, попробуй позже");
                 delay(1000).then(() => {
-                  // handlePostClick();
+                  handlePostClick();
                 });
             } if (error.message === 'Failed to fetch') {
                 alert("Кажется,сломался интернет, попробуй позже");
