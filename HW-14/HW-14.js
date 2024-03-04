@@ -127,12 +127,12 @@ buttonElement.addEventListener("click", () => {
     nameInputElement.style.backgroundColor = "white" ;
     commentInputElement.style.backgroundColor = "white";
     if (nameInputElement.value === "") {
-    nameInputElement.style.backgroundColor = "red";
-    return;
+      nameInputElement.style.backgroundColor = "red";
+      return;
     }
     if (commentInputElement.value === "") {
-    commentInputElement.style.backgroundColor = "red";
-    return;
+      commentInputElement.style.backgroundColor = "red";
+      return;
     }
     buttonElement.disabled = true;
     buttonElement.textContent = "Комментарий добавляется...";
@@ -143,7 +143,7 @@ buttonElement.addEventListener("click", () => {
             body: JSON.stringify({
                 name: nameInputElement.value,
                 text: commentInputElement.value,
-                forceError: false,
+                forceError: true,
             })
         })
         .then((response) => {
@@ -153,7 +153,8 @@ buttonElement.addEventListener("click", () => {
             }
             if (response.status === 400) {
                 throw new Error("Неверный запрос");
-            }if (response.status === 500) {
+            }
+            if (response.status === 500) {
               throw new Error("Сервер упал");
             }
 
@@ -172,11 +173,11 @@ buttonElement.addEventListener("click", () => {
             buttonElement.textContent = "Написать";
             if (error.message === "Неверный запрос") {
                 alert("Имя и комментарий должны быть не короче 3 символов");
-            }else if (error.message === "Сервер упал") {
+            } else if (error.message === "Сервер упал") {
               //  Пробуем снова, если сервер сломался
                 alert("Кажется, что-то пошло не так, попробуй позже");
-                handlePostClick();
-            } if (error.message === 'Failed to fetch') {
+                // handlePostClick();
+            } else if (error.message === 'Failed to fetch') {
                 alert("Кажется,сломался интернет, попробуй позже");
             }
             // TODO: Отправлять в систему сбора ошибок
@@ -184,6 +185,6 @@ buttonElement.addEventListener("click", () => {
         });
     };
     handlePostClick();
-    renderComments();
-    initDeleteButtonsLisners();
+    // renderComments();
+    // initDeleteButtonsLisners();
 });
