@@ -22,7 +22,7 @@ const formatDateTime = () => {
 //Массив
 let comments = [];
 
-// Запрос двнных в API на комментарий
+// Запрос данных в API на комментарий
 buttonElement.disabled = true;
 loaderElement.innerHTML = "Подождите пожалуйста, комментарии загружаются...";
 const fetchAndRenderComments = () => {
