@@ -1,7 +1,7 @@
 import { user } from "./index.js";
 const commentsUrl = "https://webdev-hw-api.vercel.app/api/v2/Dmitry-Avdoshkin/comments";
-const userUrL =     "https://wedev-api.sky.pro/api/v2/Dmitry-Avdoshkin/user/login";
-const newUserUrl =  "https://wedev-api.sky.pro/api/v2/Dmitry-Avdoshkin/user"
+const userUrL =     "https://wedev-api.sky.pro/api/user/login";
+const newUserUrl =  "https://wedev-api.sky.pro/api/user"
 
 export const setToken = () => {
     const token = user ? `Bearer ${user.token}` : undefined;
