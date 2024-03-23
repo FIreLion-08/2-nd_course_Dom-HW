@@ -11,7 +11,6 @@ export const setToken = () => {
   return token;
 };
 
-
 export function getComments() {
   return fetch(commentsUrl, {
     method: "GET",
