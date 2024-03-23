@@ -32,7 +32,7 @@ export const registrationLogin = () => {
 
   console.log(registrationButtonElement);
   registrationButtonElement.addEventListener("click", () => {
-    console.log("ИГорь");
+    console.log("Дима");
     loginInputElement.style.backgroundColor = "white";
     namedInputElement.style.backgroundColor = "white";
     passwordInputElement.style.backgroundColor = "white";
