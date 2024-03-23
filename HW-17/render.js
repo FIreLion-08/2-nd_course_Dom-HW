@@ -4,6 +4,7 @@ import { initDeleteButtonLisners } from "./delete.js";
 import { postComment } from "./api.js";
 import { fetchAndRenderComments, user } from "./index.js";
 
+// Добавление комментариев
 export const renderComments = (comments) => {
     console.log(comments);
     const appElement = document.getElementById("app");
@@ -43,7 +44,7 @@ export const renderComments = (comments) => {
         }
     </div>`;
     appElement.innerHTML = appHtml;
-    // кнопка Цитирования
+  // Ответ на комментарий
     const quoteElements = document.querySelectorAll(".comment");
     const commentInputElement = document.getElementById("comment-input");
     for (const comment of quoteElements) {
@@ -62,18 +63,21 @@ export const renderComments = (comments) => {
         const nameInputElement = document.getElementById("name-input");
         const commentInputElement = document.getElementById("comment-input");
 
-
+        //HW-13 - Лоадер загрузки при добалении коментария
+        // Условия для "Комментарий добавляется..."
         buttonElement.addEventListener("click", () => {
             nameInputElement.style.backgroundColor = "white";
             commentInputElement.style.backgroundColor = "white";
-            if (nameInputElement.value === "") {
+            if (nameInputElement.value.trim() === "") {
                 nameInputElement.style.backgroundColor = "pink";
                 return;
             }
-            if (commentInputElement.value === "") {
+            if (commentInputElement.value.trim() === "") {
                 commentInputElement.style.backgroundColor = "pink";
                 return;
             }
+
+            // Условие не активной кнопки
             buttonElement.disabled = true;
             buttonElement.textContent = "Комментарий добавляется...";
             const handlePostClick = () => {

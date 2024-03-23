@@ -32,14 +32,14 @@ export const registrationLogin = () => {
 
   console.log(registrationButtonElement);
   registrationButtonElement.addEventListener("click", () => {
-    console.log("ИГорь");
+    console.log("Дмитрий");
     loginInputElement.style.backgroundColor = "white";
     namedInputElement.style.backgroundColor = "white";
     passwordInputElement.style.backgroundColor = "white";
     if (
-      loginInputElement.value === "" ||
-      namedInputElement.value === "" ||
-      passwordInputElement.value === ""
+      loginInputElement.value.trim() === "" ||
+      namedInputElement.value.trim() === "" ||
+      passwordInputElement.value.trim() === ""
     ) {
       namedInputElement.style.backgroundColor = "pink";
       passwordInputElement.style.backgroundColor = "pink";
