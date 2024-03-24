@@ -13,10 +13,10 @@ let comments = [];
 // Форматируем дату из библиотеки date-fns
 const now = new Date();
 const createDate =
-  // format(now, "dd/MM/yyyy hh:mm"); // 26/03/2023 10:33
-  // format(now, "MM-dd-yyyy hh:mm"); // 03-26-2023 10:33
-  // format(now, "dd.MM.yyyy hh:mm:ss"); // 26.03.2023 10:33:41
-  format(now, "yyyy-MM-dd hh.mm.ss"); // 2023-03-26 10.33.41
+  // format(now, "dd/MM/yyyy hh:mm"); // 20/03/2024 10:33
+  // format(now, "MM-dd-yyyy hh:mm"); // 21-26-2024 10:33
+  // format(now, "dd.MM.yyyy hh:mm:ss"); // 21.03.2024 10:33:41
+  format(now, "yyyy-MM-dd hh.mm.ss"); // 2024-03-24 10.33.41
 
 // export let user = getFromLocalStorage();
 export let user = null;

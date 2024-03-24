@@ -11,18 +11,19 @@ export const setToken = () => {
   return token;
 };
 
-export async function getComments() {
-  const response = await fetch(commentsUrl, {
+export function getComments() {
+  return fetch(commentsUrl, {
     method: "GET",
     headers: {
       Authorization: setToken(),
     },
+  }).then((response) => {
+    return response.json();
   });
-  return await response.json();
 }
 
-export async function postComment(name, text) {
-  const response = await fetch(commentsUrl, {
+export function postComment(name, text) {
+  return fetch(commentsUrl, {
     method: "POST",
     headers: {
       Authorization: setToken(),
@@ -30,57 +31,65 @@ export async function postComment(name, text) {
     body: JSON.stringify({
       // name: name,
       text: sanitizeHtml(text),
+      // forceError: true,
     }),
+  }).then((response) => {
+    return response.json();
   });
-  return await response.json();
 }
 
-export async function deleteComment({ id }) {
-  const response = await fetch(`${commentsUrl}/${id}`, {
+export function deleteComment({ id }) {
+  return fetch(`${commentsUrl}/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: setToken(),
     },
+  }).then((response) => {
+    return response.json();
   });
-  return await response.json();
 }
 
-export async function likeComment({ id }) {
+export function likeComment({ id }) {
   // console.log(likeComment);
-  const response = await fetch(`${commentsUrl}/${id}/toggle-like`, {
+  return fetch(`${commentsUrl}/${id}/toggle-like`, {
     method: "POST",
     headers: {
       Authorization: setToken(),
     },
+  }).then((response) => {
+    return response.json();
   });
-  return await response.json();
 }
 
-export async function login({ login, password }) {
-  const response = await fetch(userUrL, {
+export function login({ login, password }) {
+  return fetch(userUrL, {
     method: "POST",
     body: JSON.stringify({
       login,
       password,
+      // forceError: true,
     }),
+  }).then((response) => {
+    if (response.status === 400) {
+      throw new Error("Неверный запрос");
+    }
+    return response.json();
   });
-  if (response.status === 400) {
-    throw new Error("Неверный запрос");
-  }
-  return await response.json();
 }
 
-export async function registration({ login, name, password }) {
-  const response = await fetch(newUserUrl, {
+export function registration({ login, name, password }) {
+  return fetch(newUserUrl, {
     method: "POST",
     body: JSON.stringify({
       login,
       name: _.capitalize(name),
       password,
+      // forceError: true,
     }),
+  }).then((response) => {
+    if (response.status === 400) {
+      throw new Error("Неверный запрос");
+    }
+    return response.json();
   });
-  if (response.status === 400) {
-    throw new Error("Неверный запрос");
-  }
-  return await response.json();
 }
