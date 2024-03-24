@@ -32,7 +32,6 @@ export const registrationLogin = () => {
 
   console.log(registrationButtonElement);
   registrationButtonElement.addEventListener("click", () => {
-    console.log("Дмитрий");
     loginInputElement.style.backgroundColor = "white";
     namedInputElement.style.backgroundColor = "white";
     passwordInputElement.style.backgroundColor = "white";
@@ -48,9 +47,9 @@ export const registrationLogin = () => {
     registrationButtonElement.disabled = true;
     registrationButtonElement.textContent = "Идет регистрация.";
     registration({
-      login: loginInputElement.value,
-      name: namedInputElement.value,
-      password: passwordInputElement.value,
+      login: loginInputElement.value.trim(),
+      name: namedInputElement.value.trim(),
+      password: passwordInputElement.value.trim(),
     })
       .then(() => {
         // eslint-disable-next-line no-undef

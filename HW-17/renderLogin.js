@@ -11,7 +11,7 @@ export const renderLogin = () => {
             <div class="login-form" id="login-form">
                 <h2>Форма входа</h2>
                 <input type="text" class="add-form-login" placeholder="Логин" id="login-input"/>
-                <input type="text" class="add-form-password" placeholder="Пароль" rows="4" id="password-input"/>
+                <input type="password" class="add-form-password" placeholder="Пароль" rows="4" id="password-input"/>
                 <div class="login-form-row">
                     <button class="login-form-button" id="login-button">Войти</button>
                 </div>
@@ -36,8 +36,8 @@ export const renderLogin = () => {
     loginButtonElement.textContent = "Идет авторизация.";
     const handleLoginClick = () => {
       login({
-        login: loginInputElement.value,
-        password: passwordInputElement.value,
+        login: loginInputElement.value.trim(),
+        password: passwordInputElement.value.trim(),
       })
         .then((responseData) => {
           setToken(responseData.user.token);
