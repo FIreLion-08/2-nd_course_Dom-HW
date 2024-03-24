@@ -27,7 +27,7 @@ export const renderLogin = () => {
   loginButtonElement.addEventListener("click", () => {
     loginInputElement.style.backgroundColor = "white";
     passwordInputElement.style.backgroundColor = "white";
-    if (loginInputElement.value.trim() === "" || passwordInputElement.value.trim() === "") {
+    if (loginInputElement.value.trim() === "" || passwordInputElement.value.trim() === "" || loginInputElement.value.trim() === " " || passwordInputElement.value.trim() === " ") {
       loginInputElement.style.backgroundColor = "pink";
       passwordInputElement.style.backgroundColor = "pink";
       return;
