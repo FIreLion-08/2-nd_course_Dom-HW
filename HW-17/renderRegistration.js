@@ -14,7 +14,7 @@ export const registrationLogin = () => {
       <h2>Форма регистрации</h2>
       <input type="text" class="add-form-login" placeholder="Введите логин" id="login-input"/>
       <input type="text" class="add-form-password" placeholder="Введите имя" rows="4" id="name-input"/>
-      <input type="text" class="add-form-password" placeholder="Введите пороль" rows="4" id="password-input"/>
+      <input type="text" class="add-form-password" placeholder="Введите пароль" rows="4" id="password-input"/>
       <div class="login-form-row">
       <button class="login-form-button" id="registration-button">Зарегистрироваться</button>
       </div>
