@@ -38,7 +38,10 @@ export const registrationLogin = () => {
     if (
       loginInputElement.value.trim() === "" ||
       namedInputElement.value.trim() === "" ||
-      passwordInputElement.value.trim() === ""
+      passwordInputElement.value.trim() === "" ||
+      loginInputElement.value.trim() === " " ||
+      namedInputElement.value.trim() === " " ||
+      passwordInputElement.value.trim() === " "
     ) {
       namedInputElement.style.backgroundColor = "pink";
       passwordInputElement.style.backgroundColor = "pink";
