@@ -50,8 +50,8 @@ export const renderLogin = () => {
         .then(() => {
           loginButtonElement.disabled = false;
           loginButtonElement.textContent = "Войти";
-          loginInputElement.value.trim() = "";
-          passwordInputElement.value.trim() = "";
+          loginInputElement.value = "";
+          passwordInputElement.value = "";
         })
         .catch((error) => {
           loginButtonElement.disabled = false;
