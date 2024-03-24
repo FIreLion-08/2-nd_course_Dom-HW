@@ -36,8 +36,8 @@ import { registrationLogin } from "./renderRegistration.js";
             loginButtonElement.textContent = "Идет авторизация.";
             const handleLoginClick = () => {
                 login({
-                    login: loginInputElement.value,
-                    password: passwordInputElement.value,
+                    login: loginInputElement.value.trim(),
+                    password: passwordInputElement.value.trim(),
                 }).then((responseData) => {
                     setToken(responseData.user.token);
                     setUser(responseData.user);
@@ -52,10 +52,10 @@ import { registrationLogin } from "./renderRegistration.js";
             };
           handleLoginClick();
         });
-      
+
         const registrationButtonElement = document.getElementById('registration-button')
-        registrationButtonElement.addEventListener("click", () => {   
+        registrationButtonElement.addEventListener("click", () => {
             registrationLogin();
         });
-      
+
     };
