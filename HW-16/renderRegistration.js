@@ -27,14 +27,14 @@ export const registrationLogin = () => {
     const loginInputElement = document.getElementById('login-input');
     const namedInputElement = document.getElementById('name-input');
     const passwordInputElement = document.getElementById('password-input');
-    
+
     console.log(registrationButtonElement)
     registrationButtonElement.addEventListener("click", () => {
         console.log("ИГорь")
         loginInputElement.style.backgroundColor = "white";
         namedInputElement.style.backgroundColor = "white";
         passwordInputElement.style.backgroundColor = "white";
-        if (loginInputElement.value === "" || namedInputElement.value === "" || passwordInputElement.value === "") {
+        if (loginInputElement.value.trim() === "" || namedInputElement.value.trim() === "" || passwordInputElement.value.trim() === "") {
             namedInputElement.style.backgroundColor = "pink";
             passwordInputElement.style.backgroundColor = "pink"
         return;
@@ -42,9 +42,9 @@ export const registrationLogin = () => {
         registrationButtonElement.disabled = true;
         registrationButtonElement.textContent = "Идет регистрация.";
         registration({
-            login: loginInputElement.value,
-            name: namedInputElement.value,
-            password: passwordInputElement.value,
+            login: loginInputElement.value.trim(),
+            name: namedInputElement.value.trim(),
+            password: passwordInputElement.value.trim(),
         }).then((responseData) => {
             return fetchAndRenderComments(comments);
         }).then((responseData) => {
@@ -52,10 +52,7 @@ export const registrationLogin = () => {
         })
     });
         const loginButtonElement = document.getElementById('login-button')
-        loginButtonElement.addEventListener("click", () => {   
+        loginButtonElement.addEventListener("click", () => {
         renderLogin();
 });
-}    
-
-
-
+}
