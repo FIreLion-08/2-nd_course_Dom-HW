@@ -3,6 +3,7 @@ import { initLikesListeners } from "./likes.js";
 import { initDeleteButtonLisners } from "./delete.js";
 import { postComment } from "./api.js";
 import { fetchAndRenderComments, user } from "./index.js";
+import { sanitizeHtml } from "./sanitizeHtml.js";
 
 // Добавление комментариев
 export const renderComments = (comments) => {
@@ -13,11 +14,11 @@ export const renderComments = (comments) => {
         console.log(comment.isLiked)
         return `<li class="comment"  data-index="${index}" id="comment">
             <div class="comment-header" >
-                <div class="comment-name">${comment.name}</div>
+                <div class="comment-name">${sanitizeHtml(comment.name)}</div>
                 <div>${comment.date}</div>
             </div>
             <div class="comment-body">
-                <div class="comment-text">${comment.text}</div>
+                <div class="comment-text">${sanitizeHtml(comment.text)}</div>
             </div>
             <div class="${user ? "comment-footer": "comment-footer-notUser"}">
                 <button id=delete-form-button class="${user? "delete-form-button ": "delete-button "}" data-id="${comment.id}">Удалить</button>
@@ -34,7 +35,7 @@ export const renderComments = (comments) => {
         ${user? `
         <div id="loading"></div>
         <div class="add-form" id="add-form">
-            <input type="text" class="add-form-name" placeholder="Введите ваше имя"  id="name-input" value="${user?.name}" readonly/>
+            <input type="text" class="add-form-name" placeholder="Введите ваше имя"  id="name-input" value="${sanitizeHtml(user?.name)}" readonly/>
             <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4" id="comment-input"></textarea>
             <div class="add-form-row">
                 <button class="add-form-button" id="add-button">Написать</button>
@@ -44,17 +45,24 @@ export const renderComments = (comments) => {
         }
     </div>`;
     appElement.innerHTML = appHtml;
+
   // Ответ на комментарий
-    const quoteElements = document.querySelectorAll(".comment");
-    const commentInputElement = document.getElementById("comment-input");
-    for (const comment of quoteElements) {
-        comment.addEventListener("click", () => {
-            const index = comment.dataset.index;
-            const comentText = comments[index].text;
-            const comentAuthor = comments[index].name;
-            commentInputElement.value = `<${comentAuthor}> ${comentText} `;
-        });
+    function answerComment(){
+        if (!user){ //Нет пользователя.
+            return
+        }
+        const quoteElements = document.querySelectorAll(".comment");
+        const commentInputElement = document.getElementById("comment-input");
+        for (const comment of quoteElements) {
+            comment.addEventListener("click", () => {
+                const index = comment.dataset.index;
+                const comentText = comments[index].text;
+                const comentAuthor = comments[index].name;
+                commentInputElement.value = `<${comentAuthor}> ${comentText} `;
+            });
+        }
     }
+    answerComment();
     initLikesListeners(comments);
     initDeleteButtonLisners(comments);
 

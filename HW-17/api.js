@@ -1,5 +1,4 @@
 import { user } from "./index.js";
-import { sanitizeHtml } from "./sanitizeHtml.js";
 import _ from "lodash";
 
 const commentsUrl = "https://webdev-hw-api.vercel.app/api/v2/Dmitry-Avdoshkin/comments";
@@ -30,7 +29,7 @@ export function postComment(name, text) {
     },
     body: JSON.stringify({
       // name: name,
-      text: sanitizeHtml(text),
+      text: text,
       // forceError: true,
     }),
   }).then((response) => {
