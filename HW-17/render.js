@@ -89,7 +89,7 @@ export const renderComments = (comments) => {
             buttonElement.disabled = true;
             buttonElement.textContent = "Комментарий добавляется...";
             const handlePostClick = () => {
-                postComment(nameInputElement.value, commentInputElement.value)
+                postComment(nameInputElement.value.trim(), commentInputElement.value.trim())
                     .then((response) => {
                         if (response.status === 201) {
                             return response.json();
@@ -132,9 +132,9 @@ export const renderComments = (comments) => {
                         console.warn(error);
                     });
             };
-            initDeleteButtonLisners(comments);
+            // initDeleteButtonLisners(comments);
             handlePostClick();
-            renderComments(comments);
+            // renderComments(comments);
         });
     } else {
         const loginButtonElement = document.getElementById("login-button");

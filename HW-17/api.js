@@ -16,9 +16,10 @@ export function getComments() {
     headers: {
       Authorization: setToken(),
     },
-  }).then((response) => {
-    return response.json();
-  });
+  })
+  // .then((response) => {
+  //   return response.json();
+  // });
 }
 
 export function postComment(name, text) {
@@ -32,9 +33,10 @@ export function postComment(name, text) {
       text: text,
       // forceError: true,
     }),
-  }).then((response) => {
-    return response.json();
-  });
+  })
+  // .then((response) => {
+  //   return response.json();
+  // });
 }
 
 export function deleteComment({ id }) {

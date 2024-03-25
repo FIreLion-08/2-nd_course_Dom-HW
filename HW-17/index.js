@@ -31,7 +31,12 @@ export const logout = () => {
 };
 // Запрос двнных в API на комментарий
 export const fetchAndRenderComments = (comments) => {
-  getComments({ token: setToken() })
+  getComments({ token: setToken() }).then((res)=> {
+    if(!res.ok){
+      throw new Error('Ошибк запроса')
+    }
+    return res.json()
+  })
     .then((responseData) => {
     const appComments = responseData.comments.map((comment) => {
       return {
@@ -45,6 +50,12 @@ export const fetchAndRenderComments = (comments) => {
     });
     comments = appComments;
     renderComments(comments);
-  });
+  })
+  .catch((error)=> {
+    alert(error.message)
+    const appHTML=document.getElementById('app')
+    appHTML.innerHTML='Ошибка с интернетом'
+    renderComments(comments);
+  })
 };
 fetchAndRenderComments(comments);
