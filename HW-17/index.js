@@ -51,6 +51,7 @@ export const fetchAndRenderComments = (comments) => {
     comments = appComments;
     renderComments(comments);
   })
+  //Падения интернета
   .catch((error)=> {
     alert(error.message)
     const appHTML=document.getElementById('app')
